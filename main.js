@@ -63,6 +63,7 @@ function updateCurrentBackground() {
 
 plugin.onLoad(() => {
     if (plugin.getConfig("backgrounds")) backgrounds = JSON.parse(plugin.getConfig("backgrounds"))
+    backgrounds=backgrounds.map(v=>({...v,url:v.url.replace(/http:\/\/localhost:(\S+)\/local/g,BETTERNCM_FILES_PATH)}));
 
     let enabledRandBG = plugin.getConfig("randomBG", " ") === "x"
 
@@ -94,7 +95,7 @@ let [enableMica, disableMica] = (() => {
     }
 
     async function cImg() {
-        document.querySelector("#BGEnhanced_Background img").src = await betterncm.app.takeBackgroundScreenshot() + "?" + Date.now();
+        document.querySelector("#BGEnhanced_Background img").src = `${await betterncm.app.takeBackgroundScreenshot()}?${Date.now()}`;
     }
 
     const onload = e => {
