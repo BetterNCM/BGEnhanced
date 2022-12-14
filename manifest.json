@@ -1,0 +1,12 @@
+{
+    "manifest_version": 1,
+    "name": "BGEnhanced",
+    "version": "0.1.4",
+    "injects": {
+        "Main": [
+            {
+                "file": "main.js"
+            }
+        ]
+    }
+}
