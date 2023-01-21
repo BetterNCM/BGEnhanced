@@ -97,7 +97,7 @@ let [enableMica, disableMica] = (() => {
     }
 
     async function cImg() {
-        document.querySelector("#BGEnhanced_Background img").src = `${await betterncm.app.takeBackgroundScreenshot()}?${Date.now()}`;
+        document.querySelector("#BGEnhanced_Background img").src = URL.createObjectURL(await betterncm.app.takeBackgroundScreenshot());
     }
 
     const onload = e => {
@@ -105,25 +105,9 @@ let [enableMica, disableMica] = (() => {
         document.querySelector("#BGEnhanced_Background img").style.width = "auto";
     };
 
-    const onpointerdown = () => {
-        document.querySelector("#BGEnhanced_Background img").style.opacity = 0;
-        document.querySelector("header").addEventListener("pointermove", pointerMv);
-    }
-
-    const onblur = async () => {
-        document.querySelector("#BGEnhanced_Background img").style.opacity = 0;
-    }
 
     const onfocus = async () => {
         cImg()
-    }
-
-    async function pointerMv(e) {
-        if (e.pressure == 0) {
-            document.querySelector("header").removeEventListener("pointermove", pointerMv);
-            await cPos();
-            document.querySelector("#BGEnhanced_Background img").style.opacity = 1;
-        }
     }
 
     return [
@@ -138,7 +122,6 @@ let [enableMica, disableMica] = (() => {
             document.querySelector("#BGEnhanced_Background img").classList.add("micaLayer");
             cPos(); cImg();
             document.querySelector("#BGEnhanced_Background img").addEventListener("load", onload);
-            document.querySelector("header").addEventListener("pointerdown", onpointerdown);
             window.addEventListener("blur", onblur);
             window.addEventListener("focus", onfocus);
         }, function disableMica() {
@@ -146,7 +129,6 @@ let [enableMica, disableMica] = (() => {
             micaEnabled = false;
             document.querySelector("#BGEnhanced_Background img").classList.remove("micaLayer")
             document.querySelector("#BGEnhanced_Background img").removeEventListener("load", onload);
-            document.querySelector("header").removeEventListener("pointerdown", onpointerdown);
             window.removeEventListener("blur", onblur);
             window.removeEventListener("focus", onfocus);
         }
@@ -244,20 +226,16 @@ plugin.onConfig((tools) => {
         padding:10px;
         flex-direction: column;
     }
-
     .BGE_ctrlDom > *{
         margin-top:4px;
     }
-
     .BGE_ctrlDom:hover{
         opacity:1;
     }
-
     #BGEnhanced_Background img.micaLayer{
         transition: opacity 0.1s;
         position:relative;
     }/*
-
     #BGEnhanced_Background .micaMask{
         position:absolute;
         background:#00000011;

@@ -1,0 +1,1 @@
+(()=>{var t;plugin.onLoad(e=>{t=document.createElement("div"),ReactDOM.render(h(s,null),t)});function s(){let[e,i]=React.useState(null),[o,r]=React.useState(""),n=React.useMemo(()=>betterncm_native.fs.readFileText(`${plugin.pluginPath}/index.css`),[]);return h(f,null,h("style",null,n))}plugin.onConfig(()=>t);})();

@@ -1,0 +1,10 @@
+node_modules/
+/package.lock
+/yarn.lock
+/index.js
+/index.css
+/startup_script.css
+native/.vs
+native/Debug
+native/Release
+native/BGEnhanced.vcxproj.user

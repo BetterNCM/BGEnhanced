@@ -1,0 +1,2 @@
+# StyleSnippet
+![](./dist/preview.png)
