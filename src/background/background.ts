@@ -4,12 +4,12 @@ import { NotImplementedError } from "../errors";
 export class BaseBackground {
     current: boolean = false;
     static backgroundTypeName: string;
-    get previewBackground(): ReactElement {
+    async previewBackground(): Promise<ReactElement> {
         throw new NotImplementedError(
             "Method previewBackground is not implemented",
         );
     }
-    get backgroundElement(): ReactElement {
+    async backgroundElement(): Promise<ReactElement> {
         throw new NotImplementedError(
             "Method backgroundElement is not implemented",
         );

@@ -3,16 +3,16 @@ import { BaseBackground } from "./background";
 import Swal from "sweetalert2";
 
 export class CSSBackground extends BaseBackground {
-    static backgroundTypeName = "CSS背景";
+    static backgroundTypeName = "CSS";
     constructor(css: string) {
         super();
         this.css = css;
     }
     css: string;
-    get backgroundElement() {
-        return <div style={{ background: this.css }} />;
+    async backgroundElement() {
+        return <div style={{ width: "100px", height: "100px", background: this.css }} />;
     }
-    get previewBackground(): ReactElement {
+    async previewBackground(): Promise<ReactElement> {
         return <div style={{ background: this.css }} />;
     }
     static default(): CSSBackground {
@@ -24,7 +24,7 @@ export class CSSBackground extends BaseBackground {
             text: "你可以在此写入任何可以作为 background 值的字符串。它将被作为背景使用。",
             input: "text",
         });
-        if(result.value)return new CSSBackground(result.value);
+        if (result.value) return new CSSBackground(result.value);
         else return null;
     }
 }

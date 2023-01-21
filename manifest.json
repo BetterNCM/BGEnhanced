@@ -9,6 +9,5 @@
                 "file": "index.js"
             }
         ]
-    },
-    "native_plugin":"BGEnhanced.dll"
+    }
 }

@@ -49,9 +49,150 @@
 .BGEnhanced-Config {
     overflow: scroll;
 
+    // https://codepen.io/jasonwoan/pen/abJKZW
+    .range {
+        -webkit-appearance: none;
+        vertical-align: middle;
+        outline: none;
+        border: none;
+        padding: 0;
+        background: none;
+    }
+
+    .range::-webkit-slider-runnable-track {
+        background-color: #d7dbdd;
+        height: 6px;
+        border-radius: 3px;
+        border: 1px solid transparent;
+    }
+
+    .range[disabled]::-webkit-slider-runnable-track {
+        border: 1px solid #d7dbdd;
+        background-color: transparent;
+        opacity: 0.4;
+    }
+
+    .range::-moz-range-track {
+        background-color: #d7dbdd;
+        height: 6px;
+        border-radius: 3px;
+        border: none;
+    }
+
+    .range::-ms-track {
+        color: transparent;
+        border: none;
+        background: none;
+        height: 6px;
+    }
+
+    .range::-ms-fill-lower {
+        background-color: #d7dbdd;
+        border-radius: 3px;
+    }
+
+    .range::-ms-fill-upper {
+        background-color: #d7dbdd;
+        border-radius: 3px;
+    }
+
+    .range::-ms-tooltip {
+        display: none;
+        /* display and visibility only */
+    }
+
+    .range::-moz-range-thumb {
+        border-radius: 20px;
+        height: 18px;
+        width: 18px;
+        border: none;
+        background: none;
+        background-color: #606670;
+    }
+
+    .range:active::-moz-range-thumb {
+        outline: none;
+    }
+
+    .range::-webkit-slider-thumb {
+        -webkit-appearance: none !important;
+        border-radius: 100%;
+        background-color: #606670;
+        height: 18px;
+        width: 18px;
+        margin-top: -7px;
+    }
+
+    .range[disabled]::-webkit-slider-thumb {
+        background-color: transparent;
+        border: 1px solid #d7dbdd;
+    }
+
+    .range:active::-webkit-slider-thumb {
+        outline: none;
+    }
+
+    .range::-ms-thumb {
+        border-radius: 100%;
+        background-color: #606670;
+        height: 18px;
+        width: 18px;
+        border: none;
+    }
+
+    .range:active::-ms-thumb {
+        border: none;
+    }
+
+    output {
+        border: 1px solid #d7dbdd;
+        color: #333;
+        font-family: 'Lato', sans-serif;
+        font-size: 12px;
+        padding: .4em .6em;
+        border-radius: 3px;
+    }
+
+
     &>.buttons {
         display: flex;
         flex-direction: row;
+
+        .full {
+            z-index: 19;
+            display: flex;
+            overflow: hidden;
+            cursor: default;
+            margin-right: 10px;
+
+            .ico {
+                transition: opacity 0.3s;
+                margin-right: 10px;
+                float: left;
+            }
+
+            &:hover {
+                background: transparent;
+            }
+
+            .content {
+                width: 100%;
+                height: 100%;
+                border-left: 1px solid rgba(255, 255, 255, 0.199);
+
+                .btn {
+                    border-right: 1px solid rgba(255, 255, 255, 0.199);
+                    opacity: 0.9;
+                    background: rgba(255, 255, 255, 0.014);
+                    float: left;
+                    padding: .1em .8em;
+                    cursor: pointer;
+                }
+            }
+
+            width: 100%;
+            margin-bottom: 1em;
+        }
 
         .extendable {
             z-index: 19;
@@ -73,25 +214,25 @@
             .content {
                 width: 100%;
                 height: 100%;
-                opacity: 0;
-                margin-top: 1em;
-                transition: opacity 0.3s, margin-top 0.3s;
+                border-left: 1px solid rgba(255, 255, 255, 0.199);
 
                 .btn {
-                    margin-right: .3em;
+                    border-right: 1px solid rgba(255, 255, 255, 0.199);
                     opacity: 0.9;
                     background: rgba(255, 255, 255, 0.014);
                     float: left;
                     padding: .1em .8em;
                     cursor: pointer;
+
+                    &.enabled {
+                        background: rgba(255, 255, 255, 0.253);
+                    }
                 }
             }
 
-            backdrop-filter: blur(10px);
-
             &:hover {
                 width: 100%;
-
+                background: transparent;
 
                 .ico {
                     opacity: 0.8;
@@ -131,11 +272,12 @@
 
         position: relative;
 
-        .buttons {
+        .info {
             transition: opacity 0.2s;
             display: flex;
             align-items: flex-end;
-            flex-direction: row-reverse;
+            justify-content: flex-end;
+            flex-direction: column;
             position: absolute;
             left: 0;
             top: 0;
@@ -146,20 +288,34 @@
             padding: 5px;
             background: linear-gradient(-45deg, #00000083, #00000000);
 
-            .btn {
-                margin: 5px 5px;
-                cursor: pointer;
-                width: 20px;
-                height: 20px;
-                svg{
+            .name{
+                padding: 0.2em 0.5em;
+                color: rgba(255, 255, 255, 0.678);
+                font-size: 1.1em;
+            }
+
+            .buttons{
+                display: flex;
+                align-items: flex-end;
+                flex-direction: row-reverse;
+
+                .btn {
+                    margin: 5px 5px;
+                    cursor: pointer;
                     width: 20px;
                     height: 20px;
+    
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
             }
+
         }
 
         &:hover {
-            .buttons {
+            .info {
                 opacity: 1;
             }
         }
