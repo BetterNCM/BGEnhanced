@@ -1,7 +1,7 @@
 {
     "manifest_version": 1,
     "name": "BGEnhanced",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "author":"MicroBlock",
     "injects": {
         "Main": [
