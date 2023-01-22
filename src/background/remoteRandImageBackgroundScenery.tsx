@@ -1,11 +1,21 @@
 import { Component, ReactElement } from "react";
 import { BaseBackground } from "./background";
-import { RemoteImageBackground } from "./remoteImageBackground";
 
-export class RemoteRandImageBackgroundScenery extends RemoteImageBackground {
+export class RemoteRandImageBackgroundScenery extends BaseBackground {
     static backgroundTypeName = "必应每日";
+    ImageUrl: string = "https://api.dujin.org/bing/1920.php";
     constructor() {
-        super("https://api.dujin.org/bing/1920.php");
+        super();
+    }
+    async backgroundElement() {
+        return (
+            <img
+                src={`${this.ImageUrl}?${new Date().getTime()}`}
+            />
+        );
+    }
+    async previewBackground(): Promise<ReactElement> {
+        return <div style={{ background: `url(${this.ImageUrl}?${new Date().getTime()}) 0% 0% / cover`}} />;
     }
     static default(): RemoteRandImageBackgroundScenery {
         return new RemoteRandImageBackgroundScenery();
