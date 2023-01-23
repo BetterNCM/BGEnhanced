@@ -21,12 +21,13 @@ import { ReactElement } from "react";
 import { ImageBackground } from "./background/imageBackground";
 import { RemoteRandImageBackgroundLoli } from "./background/remoteRandImageBackgroundLoli";
 import { RemoteRandImageBackgroundScenery } from "./background/remoteRandImageBackgroundScenery";
+import { CoverImageBackground } from "./background/coverImageBackground";
 
 let configElement = document.createElement("div");
 const BGDom = document.createElement("div");
 BGDom.classList.add("BGEnhanced-BackgoundDom");
 
-const BackgroundTypes = [VideoBackground, CSSBackground, ImageBackground, RemoteRandImageBackgroundLoli, RemoteRandImageBackgroundScenery];
+const BackgroundTypes = [VideoBackground, CSSBackground, ImageBackground, RemoteRandImageBackgroundLoli, RemoteRandImageBackgroundScenery, CoverImageBackground];
 
 plugin.onLoad((selfPlugin) => {
     ReactDOM.render(<Main />, BGDom);
