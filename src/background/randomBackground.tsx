@@ -24,9 +24,7 @@ export class RandomBackground extends RecursiveLockBackground {
             }
 
             const filteredBGList = React.useMemo(() =>
-                selfPlugin.backgroundList.filter(bg => {
-                    return !(bg.constructor as typeof BaseBackground).attributes?.includes("NoRandomBG")
-                })
+                selfPlugin.backgroundList.filter(bg => bg !== this)
                 , []);
 
             return <>
@@ -64,7 +62,7 @@ export class RandomBackground extends RecursiveLockBackground {
                 betterncm.utils.waitForFunction(() => selfPlugin.backgroundList.length),
                 betterncm.utils.delay(1000).then(_ => Promise.reject("Timeout"))
             ]).then(() => selfPlugin.backgroundList.filter(bg => {
-                return !(bg.constructor as typeof BaseBackground).attributes?.includes("NoRandomBG") && !this.excludeList.includes(bg.id)
+                return bg !== this && !this.excludeList.includes(bg.id)
 
             }).sort(_ => Math.random() - 0.5)[0]);
         }
@@ -86,9 +84,9 @@ export class RandomBackground extends RecursiveLockBackground {
     }
     static async askAndCreate(): Promise<BaseBackground | null> {
         const bg = new RandomBackground;
-        bg.excludeList = selfPlugin.backgroundList
+        bg.excludeList = [...selfPlugin.backgroundList
             .filter(background => (background.constructor as typeof BaseBackground).attributes.includes("recursive"))
-            .map(bg => bg.id)
+            .map(bg => bg.id)]
         return bg;
     }
 

@@ -30,9 +30,7 @@ export class MaskedBackground extends RecursiveLockBackground {
             }
 
             const filteredBGList = React.useMemo(() =>
-                selfPlugin.backgroundList.filter(bg => {
-                    return !(bg.constructor as typeof BaseBackground).attributes?.includes("NoMaskedBG")
-                })
+                selfPlugin.backgroundList.filter(bg => bg !== this)
                 , []);
 
             return <>
@@ -44,7 +42,7 @@ export class MaskedBackground extends RecursiveLockBackground {
                     <span>
                         遮罩透明度：
                     </span>
-                    <input type="range" value={maskColorOpacity} min={0} max={256} step={1} onChange={(e) => setMaskColorOpacity(parseFloat(e.target.value))} />
+                    <input type="range" value={maskColorOpacity} min={0} max={255} step={1} onChange={(e) => setMaskColorOpacity(parseFloat(e.target.value))} />
                 </div>
                 <div>
                     遮罩对象：
@@ -117,11 +115,11 @@ export class MaskedBackground extends RecursiveLockBackground {
     }
 
     async backgroundElement(): Promise<ReactElement> {
-        if(this.checkRecursive()) return <div>Potential circular reference detected.</div>;
-        
+        if (this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+
         return <>
             {await (await this.#targetBackground()).backgroundElement()}
-            <div className={`bgMask-${this.id}`}/>
+            <div className={`bgMask-${this.id}`} />
             <style>
                 {this.#getStyleSheet()}
             </style>
