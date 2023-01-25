@@ -167,10 +167,10 @@ function Main() {
 
     const backgroundParentRef = React.useRef<null | HTMLDivElement>(null);
 
-    const recalcBGSize = React.useCallback(() => {
+    const recalcBGSize = () => {
+        
         if (backgroundParentRef.current && backgroundParentRef.current.firstElementChild) {
             const bgDom = backgroundParentRef.current.firstElementChild as HTMLDivElement;
-
             bgDom.setAttribute("style", "");
             const { width, height } = bgDom.getClientRects()[0];
 
@@ -198,15 +198,15 @@ function Main() {
                 bgDom.style.height = `${dimensions.height}px`;
             }
         }
-    }, [dimensions, backgroundMode, backgroundParentRef, backgroundList]);
+    };
 
     useInterval(recalcBGSize, 1000);
-    React.useEffect(recalcBGSize, [dimensions, backgroundMode, backgroundParentRef, backgroundList])
+    React.useEffect(recalcBGSize, [dimensions, backgroundMode, currentBackgroundElement])
 
     async function askAndAddBackground(background) {
-        const result = await background.askAndCreate();
-        console.log(backgroundList.concat([result]));
+        const result = await background.askAndCreate(); 
         if (result != null) setBackgroundList(backgroundList.concat([result]));
+        console.log(backgroundList);
     }
 
     function removeBackground(background: BaseBackground) {
