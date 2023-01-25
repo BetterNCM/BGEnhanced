@@ -4,8 +4,9 @@ import { BaseBackground } from "./background";
 import { BackgroundPreviewList, selfPlugin } from "..";
 import Swal from "sweetalert2";
 import { MdSelectAll } from "react-icons/md";
+import { RecursiveLockBackground } from "./RecursiveLockBackground";
 
-export class RandomBackground extends BaseBackground {
+export class RandomBackground extends RecursiveLockBackground {
     async onConfig(): Promise<undefined> {
         const ConfigMenu = () => {
             const [excludes, setExcludes] = React.useState(this.excludeList);
@@ -48,6 +49,8 @@ export class RandomBackground extends BaseBackground {
 
         await p;
 
+        this.resetRecursiveCount();
+
         return;
     }
     static backgroundTypeName: string = "随机抽选";
@@ -69,10 +72,14 @@ export class RandomBackground extends BaseBackground {
     }
 
     async previewBackground(): Promise<ReactElement> {
+        if(this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+        
         return (await this.#randomBackground()).previewBackground();
     }
     async backgroundElement(): Promise<ReactElement> {
-        return (await this.#randomBackground()).backgroundElement();
+        if(this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+
+        return <></>
     }
     static default(): BaseBackground {
         return new RandomBackground;

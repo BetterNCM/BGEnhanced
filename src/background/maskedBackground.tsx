@@ -4,8 +4,9 @@ import { BaseBackground } from "./background";
 import { BackgroundPreviewList, selfPlugin } from "..";
 import Swal from "sweetalert2";
 import { MdSelectAll } from "react-icons/md";
+import { RecursiveLockBackground } from "./RecursiveLockBackground";
 
-export class MaskedBackground extends BaseBackground {
+export class MaskedBackground extends RecursiveLockBackground {
     async onConfig(): Promise<undefined> {
         const ConfigMenu = () => {
             const [target, setTarget] = React.useState(this.target);
@@ -68,15 +69,18 @@ export class MaskedBackground extends BaseBackground {
         await p;
 
         this.#targetBGElement = undefined;
+        this.resetRecursiveCount();
 
         return;
     }
     static backgroundTypeName: string = "遮罩背景";
-    static attributes = ["NoMaskedBG"];
+    static attributes = ["NoMaskedBG", "recursive"];
 
     target: string
     maskColor = "#ffffff22";
     #targetBGElement: Promise<BaseBackground> | undefined;
+
+
     async #targetBackground() {
         if (!this.#targetBGElement) {
             this.#targetBGElement = Promise.race([
@@ -88,6 +92,8 @@ export class MaskedBackground extends BaseBackground {
     }
 
     async previewBackground(): Promise<ReactElement> {
+        if (this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+
         return <>
             {await (await this.#targetBackground()).previewBackground()}
             <div className="bgMask" />
@@ -111,6 +117,8 @@ export class MaskedBackground extends BaseBackground {
     }
 
     async backgroundElement(): Promise<ReactElement> {
+        if(this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+        
         return <>
             {await (await this.#targetBackground()).backgroundElement()}
             <div className="bgMask" />
