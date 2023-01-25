@@ -10,7 +10,7 @@ export class MaskedBackground extends BaseBackground {
         const ConfigMenu = () => {
             const [target, setTarget] = React.useState(this.target);
             const [maskColorMain, setMaskColorMain] = React.useState<string>(this.maskColor.slice(0, 7));
-            const [maskColorOpacity, setMaskColorOpacity] = React.useState<number>(parseInt(this.maskColor.slice(7, 9), 16) / 256);
+            const [maskColorOpacity, setMaskColorOpacity] = React.useState<number>(parseInt(this.maskColor.slice(7, 9), 16));
 
             // https://stackoverflow.com/questions/2998784/how-to-output-numbers-with-leading-zeros-in-javascript
             function pad(num, size) {
@@ -20,7 +20,8 @@ export class MaskedBackground extends BaseBackground {
 
             React.useEffect(() => {
                 this.target = target;
-                this.maskColor = maskColorMain + pad((maskColorOpacity * 256).toString(16), 2);
+                this.maskColor = maskColorMain + pad(maskColorOpacity.toString(16), 2);
+                console.log(pad(maskColorOpacity.toString(16), 2))
             }, [target, maskColorMain, maskColorOpacity]);
 
             const checkBackground = (bg) => {
@@ -42,7 +43,7 @@ export class MaskedBackground extends BaseBackground {
                     <span>
                         遮罩透明度：
                     </span>
-                    <input type="range" value={maskColorOpacity} min={0} max={1} step={0.001} onChange={(e) => setMaskColorOpacity(parseFloat(e.target.value))} />
+                    <input type="range" value={maskColorOpacity} min={0} max={256} step={1} onChange={(e) => setMaskColorOpacity(parseFloat(e.target.value))} />
                 </div>
                 <div>
                     遮罩对象：
