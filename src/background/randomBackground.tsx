@@ -54,7 +54,7 @@ export class RandomBackground extends RecursiveLockBackground {
         return;
     }
     static backgroundTypeName: string = "随机抽选";
-    static attributes = ["NoRandomBG"];
+    static attributes = ["recursive"];
 
     excludeList: string[] = [];
     #randBGElement: Promise<BaseBackground>
@@ -85,6 +85,18 @@ export class RandomBackground extends RecursiveLockBackground {
         return new RandomBackground;
     }
     static async askAndCreate(): Promise<BaseBackground | null> {
-        return new RandomBackground;
+        const bg = new RandomBackground;
+        bg.excludeList = selfPlugin.backgroundList
+            .filter(background => (background.constructor as typeof BaseBackground).attributes.includes("recursive"))
+            .map(bg => bg.id)
+        return bg;
+    }
+
+    hooks__onBeforeAddBackground(background: BaseBackground) {
+        if ((background.constructor as typeof BaseBackground).attributes.includes("recursive")) this.excludeList.push(background.id);
+    }
+
+    hooks__onBeforeRemoveBackground(background: BaseBackground) {
+        this.excludeList = this.excludeList.filter(id => background.id !== id);
     }
 }

@@ -74,7 +74,7 @@ export class MaskedBackground extends RecursiveLockBackground {
         return;
     }
     static backgroundTypeName: string = "遮罩背景";
-    static attributes = ["NoMaskedBG", "recursive"];
+    static attributes = ["recursive"];
 
     target: string
     maskColor = "#ffffff22";

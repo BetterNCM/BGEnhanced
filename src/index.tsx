@@ -168,7 +168,7 @@ function Main() {
     const backgroundParentRef = React.useRef<null | HTMLDivElement>(null);
 
     const recalcBGSize = () => {
-        
+
         if (backgroundParentRef.current && backgroundParentRef.current.firstElementChild) {
             const bgDom = backgroundParentRef.current.firstElementChild as HTMLDivElement;
             bgDom.setAttribute("style", "");
@@ -204,9 +204,12 @@ function Main() {
     React.useEffect(recalcBGSize, [dimensions, backgroundMode, currentBackgroundElement])
 
     async function askAndAddBackground(background) {
-        const result = await background.askAndCreate(); 
+        const result = await background.askAndCreate();
+
+        // Run hooks
+        for (const bg of backgroundList) bg.hooks__onBeforeAddBackground(result);
+
         if (result != null) setBackgroundList(backgroundList.concat([result]));
-        console.log(backgroundList);
     }
 
     function removeBackground(background: BaseBackground) {
