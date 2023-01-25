@@ -96,7 +96,7 @@ export class MaskedBackground extends RecursiveLockBackground {
 
         return <>
             {await (await this.#targetBackground()).previewBackground()}
-            <div className="bgMask" />
+            <div className={`bgMask-${this.id}`} />
             <style>
                 {this.#getStyleSheet()}
             </style>
@@ -105,7 +105,7 @@ export class MaskedBackground extends RecursiveLockBackground {
 
     #getStyleSheet() {
         return `
-.bgMask{
+.bgMask-${this.id}{
     position:absolute;
     left:0;
     top:0;
@@ -121,7 +121,7 @@ export class MaskedBackground extends RecursiveLockBackground {
         
         return <>
             {await (await this.#targetBackground()).backgroundElement()}
-            <div className="bgMask" />
+            <div className={`bgMask-${this.id}`}/>
             <style>
                 {this.#getStyleSheet()}
             </style>
