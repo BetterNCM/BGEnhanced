@@ -123,6 +123,8 @@ export class MaskedBackground extends BaseBackground {
         return new MaskedBackground;
     }
     static async askAndCreate(): Promise<BaseBackground | null> {
-        return new MaskedBackground;
+        const bg = new MaskedBackground;
+        await bg.onConfig();
+        return bg;
     }
 }
