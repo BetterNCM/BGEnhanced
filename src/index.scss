@@ -182,16 +182,29 @@
 
                 .btn {
                     border-right: 1px solid rgba(255, 255, 255, 0.199);
+                    box-shadow:0 1px 0 rgba(255, 255, 255, 0.199);
+                    margin-top: 1px;
                     opacity: 0.9;
                     background: rgba(255, 255, 255, 0.014);
                     float: left;
-                    padding: .1em .8em;
+                    padding: 0 .8em;
                     cursor: pointer;
+                    box-sizing: border-box;
                 }
             }
 
             width: 100%;
             margin-bottom: 1em;
+        }
+
+        .expand-h{
+            transition: max-height .3s;
+            height: auto;
+            max-height: 32px;
+            border-radius: 15px;
+            &:hover{
+                max-height: 100px;
+            }
         }
 
         .extendable {
@@ -285,7 +298,8 @@
             bottom: 0;
             content: "";
             opacity: 0;
-            padding: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
             background: linear-gradient(-45deg, #00000083, #00000000);
 
             .name{

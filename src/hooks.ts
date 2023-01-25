@@ -30,7 +30,6 @@ export function useLocalStorage<T>(
 
 // from react-use-promise
 
-import { useEffect, useReducer } from 'react';
 
 function resolvePromise(promise) {
     if (typeof promise === 'function') {
@@ -127,3 +126,4 @@ export function useInterval(callback, delay) {
         return () => clearInterval(id);
     }, []);
 }
+

@@ -1,8 +1,24 @@
 import { Component, ReactElement } from "react";
 import { NotImplementedError } from "../errors";
 
+function makeId(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+
 export class BaseBackground {
+    async onConfig(): Promise<undefined> {
+        return ;
+    }
     current: boolean = false;
+    id: string = makeId(12);
+    static attributes:string[]=[];
     static backgroundTypeName: string;
     async previewBackground(): Promise<ReactElement> {
         throw new NotImplementedError(

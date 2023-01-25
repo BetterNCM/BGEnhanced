@@ -307,6 +307,7 @@ declare module "plugin" {
         haveConfigElement(): boolean;
     }
     export class NCMInjectPlugin extends EventTarget {
+        [x: string]: any;
         readonly filePath: string;
         pluginPath: string;
         manifest: PluginManifest;
@@ -401,7 +402,7 @@ interface EAPILyricResponse extends EAPIResponse {
     yrc?: EAPILyric;
 }
 
-declare var loadedPlugins: import("plugin").NCMInjectPlugin[];
+declare var loadedPlugins: {[k:string]:import("plugin").NCMInjectPlugin};
 declare var pluginPath: string;
 declare var plugin: import("plugin").NCMInjectPlugin;
 declare const betterncm: typeof import("betterncm-api/index").default;
