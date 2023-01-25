@@ -1,2 +1,2 @@
-# StyleSnippet
+# BGEnhanced
 ![](./dist/preview.png)
