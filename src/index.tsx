@@ -16,7 +16,7 @@ import { CSSBackground } from "./background/cssBackground";
 
 import { useInterval, useLocalStorage, usePromise } from "./hooks";
 import "./index.scss";
-import { STORE_BGBLUR, STORE_BGBRIGHTNESS, STORE_BGLIST, STORE_BGMODE, STORE_BGSCALE } from "./keys";
+import { STORE_BGBLUR, STORE_BGBRIGHTNESS, STORE_BGLIST, STORE_BGMODE, STORE_BGSCALE, STORE_DETAILEDBGBLUR } from "./keys";
 import { ReactElement } from "react";
 import { BackgroundTypes, useLocalStorageBackgroundList } from "./backgroundList";
 
@@ -137,6 +137,11 @@ function Main() {
         0,
     );
 
+    const [detailedBackgroundBlur, setDetailedBackgroundBlur] = useLocalStorage(
+        STORE_DETAILEDBGBLUR,
+        0,
+    );
+
     const [backgroundMode, setBackgroundMode] = useLocalStorage(
         STORE_BGMODE,
         "cover-centered",
@@ -173,23 +178,22 @@ function Main() {
             const bgDom = backgroundParentRef.current.firstElementChild as HTMLDivElement;
             bgDom.setAttribute("style", "");
             const { width, height } = bgDom.getClientRects()[0];
+            const scale = Math.max(dimensions.width / width, dimensions.height / height);
+            const scaledX = width * scale, scaledY = height * scale;
 
             bgDom.style.position = "relative";
 
             if (backgroundMode === "cover") {
-                const scale = Math.max(dimensions.width / width, dimensions.height / height);
-                bgDom.style.width = `${width * scale}px`;
-                bgDom.style.height = `${height * scale}px`;
+                bgDom.style.width = `${scaledX}px`;
+                bgDom.style.height = `${scaledY}px`;
             }
 
             if (backgroundMode === "cover-centered") {
-                const scale = Math.max(dimensions.width / width, dimensions.height / height);
+                bgDom.style.width = `${scaledX}px`;
+                bgDom.style.height = `${scaledY}px`;
 
-                bgDom.style.width = `${width * scale}px`;
-                bgDom.style.height = `${height * scale}px`;
-
-                bgDom.style.marginLeft = `-${(width * scale - dimensions.width) / 2}px`;
-                bgDom.style.marginTop = `-${(height * scale - dimensions.height) / 2}px`;
+                bgDom.style.marginLeft = `-${(scaledX - dimensions.width) / 2}px`;
+                bgDom.style.marginTop = `-${(scaledY - dimensions.height) / 2}px`;
             }
 
             if (backgroundMode === "stretch") {
@@ -246,16 +250,20 @@ function Main() {
 
     return (
         <>
-            <div
-                style={{
-                    backdropFilter: `blur(${backgroundBlur}px)`
-                }}
-                className="background-mask"
-            ></div>
+            {/* https://github.com/BetterNCM/BGEnhanced/pull/16#pullrequestreview-1275062715 */}
+            {detailedBackgroundBlur == 1 && 
+                <div
+                    style={{
+                        backdropFilter: `blur(${backgroundBlur}px)`
+                    }}
+                    className="background-mask"
+                ></div>
+            }
             <div
                 style={{
                     transform: `scale(${backgroundScale})`,
-                    filter: `brightness(${backgroundBrightness})`
+                    filter: `brightness(${backgroundBrightness})` +
+                        (detailedBackgroundBlur == 0 ? ` blur(${backgroundBlur}px)` : ``)
                 }}
                 className={`background mode-${backgroundMode}`}
                 ref={backgroundParentRef}
@@ -329,6 +337,17 @@ function Main() {
                                             defaultValue={backgroundBlur} />
 
                                     </div>
+
+                                    {
+                                        backgroundBlur > 0 && <div style={{ textAlign: "left" }}>
+                                            <span style={{ margin: ".5em" }}>更加精细的模糊渲染</span>
+                                            <input type="checkbox" 
+                                                className="checkbox"
+                                                onChange={(e) => setDetailedBackgroundBlur(e.target.checked ? 1 : 0)}
+                                                checked={detailedBackgroundBlur == 1} />
+
+                                        </div>
+                                    }
 
                                     <div>
                                         <span style={{ margin: ".5em" }}>明度</span>
