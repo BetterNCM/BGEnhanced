@@ -248,8 +248,14 @@ function Main() {
         <>
             <div
                 style={{
+                    backdropFilter: `blur(${backgroundBlur}px)`
+                }}
+                className="background-mask"
+            ></div>
+            <div
+                style={{
                     transform: `scale(${backgroundScale})`,
-                    filter: `blur(${backgroundBlur}px) brightness(${backgroundBrightness})`
+                    filter: `brightness(${backgroundBrightness})`
                 }}
                 className={`background mode-${backgroundMode}`}
                 ref={backgroundParentRef}
