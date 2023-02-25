@@ -20,6 +20,8 @@ import { STORE_BGBLUR, STORE_BGBRIGHTNESS, STORE_BGLIST, STORE_BGMODE, STORE_BGS
 import { ReactElement } from "react";
 import { BackgroundTypes, useLocalStorageBackgroundList } from "./backgroundList";
 
+document.body.classList.add('BGEnhanced');
+
 let configElement = document.createElement("div");
 const BGDom = document.createElement("div");
 BGDom.classList.add("BGEnhanced-BackgoundDom");
