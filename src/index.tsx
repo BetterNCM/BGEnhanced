@@ -202,7 +202,7 @@ function Main() {
         }
     };
 
-    useInterval(recalcBGSize, 1000);
+    useInterval(recalcBGSize, 10000);
     React.useEffect(() => { recalcBGSize(); }, [dimensions, backgroundMode, currentBackgroundElement])
 
     async function askAndAddBackground(background) {
