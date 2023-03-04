@@ -35,12 +35,12 @@ plugin.onLoad((_selfPlugin) => {
     document.body.appendChild(BGDom);
 });
 
-setInterval(
-    () =>
-    (document.querySelector(".BGEnhanced-styles")!.innerHTML =
-        betterncm_native.fs.readFileText(`${plugin.pluginPath}/index.css`)),
-    600,
-);
+// setInterval(
+//     () =>
+//     (document.querySelector(".BGEnhanced-styles")!.innerHTML =
+//         betterncm_native.fs.readFileText(`${plugin.pluginPath}/index.css`)),
+//     600,
+// );
 
 export function BackgroundPreviewList({
     backgroundList, buttons, currentIDs = null, cache = false
