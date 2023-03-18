@@ -203,7 +203,8 @@ function Main() {
     };
 
     useInterval(recalcBGSize, 10000);
-    React.useEffect(() => { recalcBGSize(); }, [dimensions, backgroundMode, currentBackgroundElement])
+    React.useEffect(() => { recalcBGSize(); }, [dimensions, backgroundMode, currentBackgroundElement]);
+    window.addEventListener('load', () => recalcBGSize());
 
     async function askAndAddBackground(background) {
         const result = await background.askAndCreate();
