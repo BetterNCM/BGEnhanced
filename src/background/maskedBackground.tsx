@@ -24,7 +24,8 @@ export class MaskedBackground extends RecursiveLockBackground {
                 this.target = target;
                 this.maskColor = maskColorMain + pad(maskColorOpacity.toString(16), 2);
                 console.log(pad(maskColorOpacity.toString(16), 2))
-            }, [target, maskColorMain, maskColorOpacity]);
+                this.maskBlur = maskBlur;
+            }, [target, maskColorMain, maskColorOpacity, maskBlur]);
 
             const checkBackground = (bg) => {
                 setTarget(bg.id);
