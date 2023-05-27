@@ -22,6 +22,8 @@ import { BackgroundTypes, useLocalStorageBackgroundList } from "./backgroundList
 
 document.body.classList.add('BGEnhanced');
 
+let prefabTransparencyStatus = localStorage["cc.microblock.prefab.transparency"] || true;
+
 let configElement = document.createElement("div");
 const BGDom = document.createElement("div");
 BGDom.classList.add("BGEnhanced-BackgoundDom");
@@ -33,6 +35,8 @@ plugin.onLoad((_selfPlugin) => {
 
     ReactDOM.render(<Main />, BGDom);
     document.body.appendChild(BGDom);
+
+    if (prefabTransparencyStatus == "true") document.body.classList.toggle('use-prefab-transparency-style');
 });
 
 // setInterval(
@@ -245,6 +249,11 @@ function Main() {
         )
     }
 
+    function usePrefabTransparencyStyle() {
+        prefabTransparencyStatus = prefabTransparencyStatus ? "false" : "true";
+        localStorage["cc.microblock.prefab.transparency"] = prefabTransparencyStatus;
+        if (prefabTransparencyStatus) document.body.classList.toggle('use-prefab-transparency-style');
+    }
 
 
     return (
@@ -313,7 +322,6 @@ function Main() {
                                             style={{ width: "calc(100% - 3em)", padding: ".5em" }}
                                             onChange={(e) => setBackgroundScale(parseFloat(e.target.value))}
                                             defaultValue={backgroundScale} />
-
                                     </div>
 
                                     <div>
@@ -337,6 +345,21 @@ function Main() {
                                             defaultValue={backgroundBrightness} />
 
                                     </div>
+                                </div>
+                                <div className="u-ibtn5" style={{
+                                    width: '100%',
+                                    height: 'max-content',
+                                    borderRadius: '.8em',
+                                    padding: '.5em .6ex',
+                                    opacity: '0.9',
+                                    marginBottom: "1em"
+                                }}
+                                    onClick={() =>
+                                        usePrefabTransparencyStyle()
+                                    }>
+                                    <span className="btn">
+                                        使用/移除预制全透明
+                                    </span>
                                 </div>
                                 <div className="backgrounds">
                                     <BackgroundPreviewList backgroundList={backgroundList} buttons={(background) => (
