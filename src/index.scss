@@ -344,8 +344,10 @@
 }
 
 // 预制全透明
-.m-tabwrap, .g-hd, .g-hd::after, #main-player{
-    background: transparent !important;
+.use-prefab-transparency-style {
+    .m-tabwrap, .g-hd, .g-hd::after, #main-player{
+        background: transparent !important;
+    }
 }
 
 .m-card-invite{
