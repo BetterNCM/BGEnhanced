@@ -14,8 +14,8 @@ export class CSSBackground extends BaseBackground {
             <div style={{ width: "100%", height: "100%", background: this.css }} />
         </div>;
     }
-    async previewBackground(): Promise<ReactElement> {
-        return <div style={{ background: this.css }} />;
+    async previewBackground() {
+        return () => <div style={{ background: this.css }} />;
     }
     static default(): CSSBackground {
         return new CSSBackground("gray");

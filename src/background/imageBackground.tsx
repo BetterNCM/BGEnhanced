@@ -22,8 +22,9 @@ export class ImageBackground extends BaseBackground {
             />
         );
     }
-    async previewBackground(): Promise<ReactElement> {
-        return <div style={{ background: `url(${await this.getMountedImageUrl()}) 0% 0% / cover` }} />;
+    async previewBackground(): Promise<React.FC> {
+        const url = await this.getMountedImageUrl();
+        return () => <div style={{ background: `url(${url}) 0% 0% / cover` }} />;
     }
 
     static default(): ImageBackground {

@@ -18,8 +18,8 @@ export class RemoteImageBackground extends BaseBackground {
             />
         );
     }
-    async previewBackground(): Promise<ReactElement> {
-        return <div style={{ background: `url(${this.ImageUrl}) 0% 0% / cover` }} />;
+    async previewBackground() {
+        return () => <div style={{ background: `url(${this.ImageUrl}) 0% 0% / cover` }} />;
     }
 
     static default(): RemoteImageBackground {

@@ -20,7 +20,7 @@ export class BaseBackground {
     id: string = makeId(12);
     static attributes: string[] = [];
     static backgroundTypeName: string;
-    async previewBackground(): Promise<ReactElement> {
+    async previewBackground(): Promise<React.FC> {
         throw new NotImplementedError(
             "Method previewBackground is not implemented",
         );

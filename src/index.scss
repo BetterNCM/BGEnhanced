@@ -2,6 +2,11 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
 
     .background {
         width: 100%;
@@ -157,6 +162,9 @@
     &>.buttons {
         display: flex;
         flex-direction: row;
+        background: var(--colorFunction3);
+        border-radius: 5px;
+        height: 33px;
 
         .full {
             z-index: 19;
@@ -165,10 +173,13 @@
             cursor: default;
             margin-right: 10px;
 
+
             .ico {
                 transition: opacity 0.3s;
                 margin-right: 10px;
                 float: left;
+                display: flex;
+                align-items: center;
             }
 
             &:hover {
@@ -182,7 +193,7 @@
 
                 .btn {
                     border-right: 1px solid rgba(255, 255, 255, 0.199);
-                    box-shadow:0 1px 0 rgba(255, 255, 255, 0.199);
+                    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.199);
                     margin-top: 1px;
                     opacity: 0.9;
                     background: rgba(255, 255, 255, 0.014);
@@ -194,15 +205,15 @@
             }
 
             width: 100%;
-            margin-bottom: 1em;
         }
 
-        .expand-h{
+        .expand-h {
             transition: max-height .3s;
             height: auto;
             max-height: 32px;
             border-radius: 15px;
-            &:hover{
+
+            &:hover {
                 max-height: 100px;
             }
         }
@@ -212,8 +223,8 @@
             display: flex;
 
             transition: width 0.3s, background-color 0.1s, border-color 0.1s;
-            width: 50px;
-            min-width: 50px;
+            width: 20px;
+            min-width: 20px;
             overflow: hidden;
             cursor: default;
             margin-right: 10px;
@@ -222,6 +233,8 @@
                 transition: opacity 0.3s;
                 margin-right: 10px;
                 float: left;
+                display: flex;
+                align-items: center;
             }
 
             .content {
@@ -230,7 +243,7 @@
                 border-left: 1px solid rgba(255, 255, 255, 0.199);
 
                 .btn {
-                    border-right: 1px solid rgba(255, 255, 255, 0.199);
+                    border: 1px solid rgba(255, 255, 255, 0.199);
                     opacity: 0.9;
                     background: rgba(255, 255, 255, 0.014);
                     float: left;
@@ -257,7 +270,6 @@
                 }
             }
 
-            margin-bottom: 1em;
         }
 
     }
@@ -302,13 +314,13 @@
             padding-bottom: 5px;
             background: linear-gradient(-45deg, #00000083, #00000000);
 
-            .name{
+            .name {
                 padding: 0.2em 0.5em;
                 color: rgba(255, 255, 255, 0.678);
                 font-size: 1.1em;
             }
 
-            .buttons{
+            .buttons {
                 display: flex;
                 align-items: flex-end;
                 flex-direction: row-reverse;
@@ -318,7 +330,7 @@
                     cursor: pointer;
                     width: 20px;
                     height: 20px;
-    
+
                     svg {
                         width: 20px;
                         height: 20px;
@@ -341,15 +353,24 @@
             height: $bg-preview-size;
         }
     }
-}
 
-// 预制全透明
-.use-prefab-transparency-style {
-    .m-tabwrap, .g-hd, .g-hd::after, #main-player{
-        background: transparent !important;
+    .universalOptions {
+        background: var(--colorFunction3);
+        margin-top: 10px;
     }
 }
 
-.m-card-invite{
+// 预制全透明
+
+.m-tabwrap,
+.g-hd,
+.g-hd::after,
+#main-player,
+[class^="DefaultBarWrapper_"] {
+    background: transparent !important;
+}
+
+
+.m-card-invite {
     transform: translate(-80px);
 }

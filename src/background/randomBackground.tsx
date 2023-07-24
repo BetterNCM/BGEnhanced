@@ -69,8 +69,8 @@ export class RandomBackground extends RecursiveLockBackground {
         return this.#randBGElement;
     }
 
-    async previewBackground(): Promise<ReactElement> {
-        if (this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+    async previewBackground() {
+        if (this.checkRecursive()) return () => <div>Potential circular reference detected.</div>;
 
         return (await this.#randomBackground()).previewBackground();
     }

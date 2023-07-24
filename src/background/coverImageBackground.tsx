@@ -20,12 +20,12 @@ export class CoverImageBackground extends BaseBackground {
             />
         );
     }
-    async previewBackground(): Promise<ReactElement> {
-        return <div className="BGE-coverImageBG" style={{ background: "transparent" }} />;
+    async previewBackground() {
+        return () => <div className="BGE-coverImageBG" style={{ background: "transparent" }} />;
     }
 
     static async askAndCreate(): Promise<BaseBackground | null> {
-        lastUrl="";
+        lastUrl = "";
         return new CoverImageBackground("");
     }
 

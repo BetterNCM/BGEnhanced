@@ -25,10 +25,11 @@ export class VideoBackground extends BaseBackground {
             />
         );
     }
-    async previewBackground(): Promise<ReactElement> {
-        return <video preload="metadata" src={await this.getMountedVideoUrl()} />;
+    async previewBackground(): Promise<React.FC> {
+        const url = await this.getMountedVideoUrl();
+        return () => <video preload="metadata" src={url} />;
     }
-    
+
     static default(): VideoBackground {
         return new VideoBackground("");
     }

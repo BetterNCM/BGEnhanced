@@ -99,11 +99,12 @@ export class MaskedBackground extends RecursiveLockBackground {
         return this.#targetBGElement;
     }
 
-    async previewBackground(): Promise<ReactElement> {
-        if (this.checkRecursive()) return <div>Potential circular reference detected.</div>;
+    async previewBackground(): Promise<React.FC> {
+        if (this.checkRecursive()) return () => <div>Potential circular reference detected.</div>;
 
-        return <>
-            {await (await this.#targetBackground()).previewBackground()}
+        const preview = await(await this.#targetBackground()).previewBackground();
+        return () => <>
+            {preview}
             <div className={`bgMask-${this.id}`} />
             <style>
                 {this.#getStyleSheet()}

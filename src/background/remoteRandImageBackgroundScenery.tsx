@@ -14,8 +14,8 @@ export class RemoteRandImageBackgroundScenery extends BaseBackground {
             />
         );
     }
-    async previewBackground(): Promise<ReactElement> {
-        return <div style={{ background: `url(${this.ImageUrl}?${new Date().getTime()}) 0% 0% / cover`}} />;
+    async previewBackground(): Promise<React.FC> {
+        return () => <div style={{ background: `url(${this.ImageUrl}?${new Date().getTime()}) 0% 0% / cover` }} />;
     }
     static default(): RemoteRandImageBackgroundScenery {
         return new RemoteRandImageBackgroundScenery();

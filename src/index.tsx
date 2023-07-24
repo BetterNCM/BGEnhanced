@@ -17,7 +17,7 @@ import { CSSBackground } from "./background/cssBackground";
 import { useInterval, useLocalStorage, usePromise } from "./hooks";
 import "./index.scss";
 import { STORE_BGBLUR, STORE_BGBRIGHTNESS, STORE_BGLIST, STORE_BGMODE, STORE_BGSCALE } from "./keys";
-import { ReactElement } from "react";
+import { NamedExoticComponent, ReactElement, createElement } from "react";
 import { BackgroundTypes, useLocalStorageBackgroundList } from "./backgroundList";
 
 document.body.classList.add('BGEnhanced');
@@ -69,10 +69,10 @@ export function BackgroundPreviewList({
         );
     }
 
-    const [backgroundPreviewList, setBackgroundPreviewList] = React.useState<([ReactElement | null, BaseBackground])[]>([]);
+    const [backgroundPreviewList, setBackgroundPreviewList] = React.useState<([NamedExoticComponent<object> | null, BaseBackground])[]>([]);
 
     React.useEffect(() => {
-        const previewList: ([ReactElement | null, BaseBackground])[] = [];
+        const previewList: ([NamedExoticComponent<object> | null, BaseBackground])[] = [];
         for (const backgroundIndex in backgroundList) {
             const background = backgroundList[backgroundIndex];
 
@@ -83,7 +83,7 @@ export function BackgroundPreviewList({
                 previewList.push([null, background]);
                 background.previewBackground().then(preview => {
                     setBackgroundPreviewList((prev) => prev.map(previewVal => {
-                        if (previewVal[1] === background) return [preview, background];
+                        if (previewVal[1] === background) return [React.memo(preview), background];
                         return previewVal;
                     }))
                 })
@@ -94,7 +94,8 @@ export function BackgroundPreviewList({
     }, [backgroundList]);
 
     return <>
-        {backgroundList.map((v, i) => PreviewBackground(v, backgroundPreviewList[i]?.[0]))}
+        {backgroundList.filter((v, i) => backgroundPreviewList[i]?.[0])
+            .map((v, i) => PreviewBackground(v, createElement(backgroundPreviewList[i]?.[0]!)))}
     </>
 }
 
@@ -150,6 +151,8 @@ function Main() {
 
     const [backgroundList, setBackgroundList] = useLocalStorageBackgroundList(STORE_BGLIST);
 
+    const [currentBackgroundId, setCurrentBackgroundId] = React.useState<string | null>(backgroundList.find((bg) => bg.current)?.id ?? null);
+
     React.useEffect(() => {
         selfPlugin.backgroundList = backgroundList;
     }, [backgroundList]);
@@ -157,13 +160,12 @@ function Main() {
 
 
     const currentBackground = React.useMemo(() => {
-
         return (
             backgroundList.find((bg) => bg.current) ??
             backgroundList[0] ??
             new CSSBackground("linear-gradient(45deg, #0037ff, #005aff)")
         );
-    }, [backgroundList]);
+    }, [currentBackgroundId]);
 
     const [currentConfigBackground, setCurrentConfigBackground] = React.useState<ReactElement | null>(null);
 
@@ -225,6 +227,7 @@ function Main() {
     }
 
     function selectBackground(background: BaseBackground) {
+        setCurrentBackgroundId(background.id);
         setBackgroundList(
             backgroundList.map((bg) => {
                 if (bg === background) bg.current = true;
@@ -309,7 +312,7 @@ function Main() {
                                 <div className="universalOptions u-ibtn5" style={{
                                     width: '100%',
                                     height: 'max-content',
-                                    borderRadius: '.8em',
+                                    borderRadius: '.5em',
                                     padding: '.5em .6ex',
                                     opacity: '0.9',
                                     marginBottom: "1em"
