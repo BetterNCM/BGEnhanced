@@ -44,8 +44,8 @@ setInterval(async () => {
             image.src = src
         })
 
-    if (document.querySelector('.normal.j-cover')) {
-        const url = `orpheus://cache/?${(document.querySelector('.normal.j-cover')! as HTMLImageElement).src.split("?")[1]}`;
+    if (document.querySelector('.normal.j-cover, .cmd-image')) {
+        const url = `${(document.querySelector('.normal.j-cover, .cmd-image')! as HTMLImageElement).src.split("?")[1]}`;
         if (lastUrl !== url) {
             lastUrl = url;
             await preloadImage(url);
