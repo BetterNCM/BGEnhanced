@@ -101,7 +101,7 @@ export function BackgroundPreviewList({
 
     return <>
         {backgroundList.filter((v, i) => backgroundPreviewList[i]?.[0])
-            .map((v, i) => PreviewBackground(v, createElement(backgroundPreviewList[i]?.[0]!)))}
+            .map((v, i) => backgroundPreviewList[i]?.[0] && PreviewBackground(v, createElement(backgroundPreviewList[i]?.[0]!))).filter(v => v)}
     </>
 }
 
