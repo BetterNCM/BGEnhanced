@@ -47,7 +47,7 @@ plugin.onLoad((_selfPlugin) => {
 // );
 
 export function BackgroundPreviewList({
-    backgroundList, buttons, currentIDs = null, cache = false
+    backgroundList, buttons, currentIDs = null, cache = true
 }: {
     backgroundList: BaseBackground[], buttons: (base: BaseBackground) => ReactElement, currentIDs?: string[] | null, cache?: boolean
 }) {
@@ -83,7 +83,13 @@ export function BackgroundPreviewList({
                 previewList.push([null, background]);
                 background.previewBackground().then(preview => {
                     setBackgroundPreviewList((prev) => prev.map(previewVal => {
-                        if (previewVal[1] === background) return [React.memo(preview), background];
+
+                        if (previewVal[1] === background) {
+                            console.log("BGE Preview:", preview);
+                            // debugger;
+                            if (preview)
+                                return [React.memo(preview), background];
+                        }
                         return previewVal;
                     }))
                 })
@@ -170,8 +176,8 @@ function Main() {
     const [currentConfigBackground, setCurrentConfigBackground] = React.useState<ReactElement | null>(null);
 
     const [currentBackgroundElement] = usePromise(
-        React.useMemo(() => currentBackground.backgroundElement(), [backgroundList])
-        , [backgroundList]);
+        React.useMemo(() => currentBackground.backgroundElement(), [currentBackgroundId])
+        , [currentBackgroundId]);
 
     const backgroundParentRef = React.useRef<null | HTMLDivElement>(null);
 
@@ -209,7 +215,12 @@ function Main() {
     };
 
     useInterval(recalcBGSize, 10000);
-    React.useEffect(() => { recalcBGSize(); }, [dimensions, backgroundMode, currentBackgroundElement]);
+    React.useEffect(() => {
+        setTimeout(() => recalcBGSize())
+    }, [dimensions, backgroundMode, currentBackgroundElement, currentBackgroundId]);
+    React.useEffect(() => {
+        setTimeout(() => recalcBGSize(), 100)
+    }, [currentBackgroundId]);
     window.addEventListener('load', () => recalcBGSize());
 
     async function askAndAddBackground(background) {

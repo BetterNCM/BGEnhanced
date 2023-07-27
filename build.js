@@ -13,7 +13,7 @@ build({
     target: "chrome91",
     bundle: true,
     sourcemap: process.argv.includes("--dev") ? "inline" : false,
-    minify: !process.argv.includes("--dev"),
+    minify: false, //!process.argv.includes("--dev"),
     outdir: process.argv.includes("--dev") ? "./" : "./dist",
     define: {
         DEBUG: process.argv.includes("--dev").toString(),
