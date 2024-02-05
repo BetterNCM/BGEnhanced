@@ -1,5 +1,6 @@
 import { Component, ReactElement } from "react";
 import { BaseBackground } from "./background";
+import Swal from "sweetalert2";
 
 export class ImageBackground extends BaseBackground {
     static backgroundTypeName = "图片";
@@ -31,7 +32,14 @@ export class ImageBackground extends BaseBackground {
         return new ImageBackground("");
     }
     static async askAndCreate(): Promise<BaseBackground | null> {
-        const path = await betterncm.app.openFileDialog(".webp .png .jpg\0", "./");
+        const path = await betterncm.app.openFileDialog(".webp .png .jpg .jpeg .bmp .gif\0", "./");
+        if (!betterncm_native.fs.exists(path)) {
+            Swal.fire('添加背景失败',
+                `原因可能为：
+1. 你选中的路径内有特殊字符（中文，制表符等）
+2. 你选中的路径不存在`, 'error')
+            return null;
+        }
         if (path) return new ImageBackground(path);
         return null;
     }
