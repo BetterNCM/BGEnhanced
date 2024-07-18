@@ -5313,7 +5313,6 @@
 
   // src/index.tsx
   document.body.classList.add("BGEnhanced");
-  var prefabTransparencyStatus = localStorage["cc.microblock.prefab.transparency"] || true;
   var configElement = document.createElement("div");
   var BGDom = document.createElement("div");
   BGDom.classList.add("BGEnhanced-BackgoundDom");
@@ -5323,8 +5322,6 @@
     selfPlugin.backgroundList = [];
     ReactDOM.render(/* @__PURE__ */ h(Main, null), BGDom);
     document.body.appendChild(BGDom);
-    if (prefabTransparencyStatus == "true")
-      document.body.classList.toggle("use-prefab-transparency-style");
   });
   function BackgroundPreviewList({
     backgroundList,
@@ -5400,6 +5397,18 @@
       STORE_BGMODE,
       "cover-centered"
     );
+    const [prefabTransparencyStatus, setPrefabTransparencyStatus] = useLocalStorage(
+      "cc.microblock.prefab.transparency",
+      false,
+      (v) => v === "true"
+    );
+    React.useEffect(() => {
+      if (prefabTransparencyStatus) {
+        document.body.classList.add("prefab-transparency");
+      } else {
+        document.body.classList.remove("prefab-transparency");
+      }
+    }, [prefabTransparencyStatus]);
     const [backgroundList, setBackgroundList] = useLocalStorageBackgroundList(STORE_BGLIST);
     const [currentBackgroundId, setCurrentBackgroundId] = React.useState(backgroundList.find((bg) => bg.current)?.id ?? null);
     React.useEffect(() => {
@@ -5481,12 +5490,6 @@
         name
       );
     }
-    function usePrefabTransparencyStyle() {
-      prefabTransparencyStatus = prefabTransparencyStatus ? "false" : "true";
-      localStorage["cc.microblock.prefab.transparency"] = prefabTransparencyStatus;
-      if (prefabTransparencyStatus)
-        document.body.classList.toggle("use-prefab-transparency-style");
-    }
     return /* @__PURE__ */ h(f, null, /* @__PURE__ */ h(
       "div",
       {
@@ -5562,9 +5565,9 @@
             opacity: "0.9",
             marginBottom: "1em"
           },
-          onClick: () => usePrefabTransparencyStyle()
+          onClick: () => setPrefabTransparencyStatus(!prefabTransparencyStatus)
         },
-        /* @__PURE__ */ h("span", { className: "btn" }, "\u4F7F\u7528/\u79FB\u9664\u9884\u5236\u5168\u900F\u660E")
+        /* @__PURE__ */ h("span", { className: "btn" }, "[", prefabTransparencyStatus ? "\u221A" : "\xD7", "] \u9884\u5236\u5168\u900F\u660E")
       ), /* @__PURE__ */ h("div", { className: "backgrounds" }, /* @__PURE__ */ h(BackgroundPreviewList, { backgroundList, buttons: (background) => /* @__PURE__ */ h(f, null, /* @__PURE__ */ h("span", { className: "btn", onClick: async () => {
         await background.onConfig();
         setBackgroundList([...backgroundList]);

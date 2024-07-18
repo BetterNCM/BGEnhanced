@@ -22,8 +22,6 @@ import { BackgroundTypes, useLocalStorageBackgroundList } from "./backgroundList
 
 document.body.classList.add('BGEnhanced');
 
-let prefabTransparencyStatus = localStorage["cc.microblock.prefab.transparency"] || true;
-
 let configElement = document.createElement("div");
 const BGDom = document.createElement("div");
 BGDom.classList.add("BGEnhanced-BackgoundDom");
@@ -35,8 +33,6 @@ plugin.onLoad((_selfPlugin) => {
 
     ReactDOM.render(<Main />, BGDom);
     document.body.appendChild(BGDom);
-
-    if (prefabTransparencyStatus == "true") document.body.classList.toggle('use-prefab-transparency-style');
 });
 
 // setInterval(
@@ -155,6 +151,20 @@ function Main() {
         "cover-centered",
     );
 
+    const [prefabTransparencyStatus, setPrefabTransparencyStatus] = useLocalStorage(
+        "cc.microblock.prefab.transparency",
+        false,
+        (v) => v === "true",
+    );
+
+    React.useEffect(() => {
+        if (prefabTransparencyStatus) {
+            document.body.classList.add("prefab-transparency");
+        } else {
+            document.body.classList.remove("prefab-transparency");
+        }
+    }, [prefabTransparencyStatus]);
+
     const [backgroundList, setBackgroundList] = useLocalStorageBackgroundList(STORE_BGLIST);
 
     const [currentBackgroundId, setCurrentBackgroundId] = React.useState<string | null>(backgroundList.find((bg) => bg.current)?.id ?? null);
@@ -263,12 +273,6 @@ function Main() {
         )
     }
 
-    function usePrefabTransparencyStyle() {
-        prefabTransparencyStatus = prefabTransparencyStatus ? "false" : "true";
-        localStorage["cc.microblock.prefab.transparency"] = prefabTransparencyStatus;
-        if (prefabTransparencyStatus) document.body.classList.toggle('use-prefab-transparency-style');
-    }
-
 
     return (
         <>
@@ -369,10 +373,10 @@ function Main() {
                                     marginBottom: "1em"
                                 }}
                                     onClick={() =>
-                                        usePrefabTransparencyStyle()
+                                        setPrefabTransparencyStatus(!prefabTransparencyStatus)
                                     }>
                                     <span className="btn">
-                                        使用/移除预制全透明
+                                        [{prefabTransparencyStatus ? '√' : '×'}] 预制全透明
                                     </span>
                                 </div>
                                 <div className="backgrounds">
