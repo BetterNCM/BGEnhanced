@@ -4828,16 +4828,20 @@
     }
     ImageUrl;
     async backgroundElement() {
-      return /* @__PURE__ */ h(
+      return /* @__PURE__ */ h("div", { className: "BGE-coverImageBG" }, /* @__PURE__ */ h(
         "img",
         {
-          className: "BGE-coverImageBG",
-          src: ";"
+          className: "BGE-coverImageBG-a"
         }
-      );
+      ), /* @__PURE__ */ h(
+        "img",
+        {
+          className: "BGE-coverImageBG-b"
+        }
+      ));
     }
     async previewBackground() {
-      return () => /* @__PURE__ */ h("div", { className: "BGE-coverImageBG", style: { background: "transparent" } });
+      return () => /* @__PURE__ */ h("div", { className: "BGE-coverImageBGPreview", style: { background: "transparent" } });
     }
     static async askAndCreate() {
       lastUrl = "";
@@ -4860,13 +4864,32 @@
       const url = `${document.querySelector(".normal.j-cover, .cmd-image").src.split("?")[1]}`;
       if (lastUrl !== url) {
         lastUrl = url;
-        await preloadImage(url);
+        await preloadImage(url).catch(() => {
+        });
       }
       for (const img of document.querySelectorAll(".BGE-coverImageBG")) {
-        if (img.getAttribute("src"))
-          img.setAttribute("src", url);
-        if (img.style.background)
-          img.style.background = `url(${url}) 0% 0% / cover`;
+        const a = img.querySelector(".BGE-coverImageBG-a");
+        const b = img.querySelector(".BGE-coverImageBG-b");
+        if (a.src !== url) {
+          b.style.opacity = "0";
+          b.src = url;
+          await new Promise((r) => {
+            b.addEventListener("load", r);
+            b.addEventListener("error", r);
+          });
+          a.style.opacity = "0";
+          b.style.opacity = "1";
+          await new Promise((r) => setTimeout(r, 1100));
+          b.classList.add("BGE-coverImageBG-a");
+          b.classList.remove("BGE-coverImageBG-b");
+          a.classList.add("BGE-coverImageBG-b");
+          a.classList.remove("BGE-coverImageBG-a");
+          a.src = "";
+          b.parentElement.appendChild(a);
+        }
+      }
+      for (const img of document.querySelectorAll(".BGE-coverImageBGPreview")) {
+        img.style.background = `url(${url}) 0% 0% / cover`;
       }
     }
   }, 300);

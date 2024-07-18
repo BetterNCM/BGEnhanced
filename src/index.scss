@@ -54,6 +54,15 @@
             }
         }
     }
+
+    .BGE-coverImageBG {
+        .BGE-coverImageBG-a, .BGE-coverImageBG-b {
+            transition: opacity 1s;
+            position: absolute;
+            left: 0;
+            width: 100%;
+        }
+    }
 }
 
 .BGEnhanced-Config {
