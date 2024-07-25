@@ -17,7 +17,7 @@ import { CSSBackground } from "./background/cssBackground";
 import { useInterval, useLocalStorage, usePromise } from "./hooks";
 import "./index.scss";
 import { STORE_BGBLUR, STORE_BGBRIGHTNESS, STORE_BGLIST, STORE_BGMODE, STORE_BGSCALE } from "./keys";
-import { NamedExoticComponent, ReactElement, createElement } from "react";
+import { NamedExoticComponent, ReactElement } from "react";
 import { BackgroundTypes, useLocalStorageBackgroundList } from "./backgroundList";
 
 document.body.classList.add('BGEnhanced');
@@ -97,7 +97,7 @@ export function BackgroundPreviewList({
 
     return <>
         {backgroundList.filter((v, i) => backgroundPreviewList[i]?.[0])
-            .map((v, i) => backgroundPreviewList[i]?.[0] && PreviewBackground(v, createElement(backgroundPreviewList[i]?.[0]!))).filter(v => v)}
+            .map((v, i) => backgroundPreviewList[i]?.[0] && PreviewBackground(v, React.createElement(backgroundPreviewList[i]?.[0]!))).filter(v => v)}
     </>
 }
 
